@@ -1,0 +1,55 @@
+- hosts: all,!r,!action_server
+  tasks:
+    - name: install dependencies
+      become: true
+      ansible.builtin.apt:
+        name:
+        - python2
+        - git
+        - make
+        update_cache: yes
+
+    - name: get pip for python2
+      become: true
+      ansible.builtin.get_url:
+        url: https://bootstrap.pypa.io/pip/2.7/get-pip.py
+        dest: /tmp/get-pip.py
+        mode: '0755'
+    - name: install pip for python2
+      become: true
+      shell: python2.7 /tmp/get-pip.py
+    - name: install minicps
+      become: true
+      shell: pip install cpppo==3.7.1 minicps pandas
+
+    - name: Upload scada-traffic-generator directory
+      ansible.builtin.copy:
+        src: scada-traffic-generator
+        dest: ~/
+        mode: preserve
+
+    - name: copy protocol to minicps installation
+      become: true
+      copy:
+        src: protocols.py
+        dest: /usr/local/lib/python2.7/dist-packages/minicps/
+    - name: remove previously compiled protocol version
+      become: true
+      ansible.builtin.file:
+        path: /usr/local/lib/python2.7/dist-packages/minicps/protocols.pyc
+        state: absent
+    - name: copy protocol to minicps installation
+      become: true
+      copy:
+        src: devices.py
+        dest: /usr/local/lib/python2.7/dist-packages/minicps/
+    - name: remove previously compiled protocol version
+      become: true
+      ansible.builtin.file:
+        path: /usr/local/lib/python2.7/dist-packages/minicps/devices.pyc
+        state: absent
+    - name: Initialize swat repo
+      make:
+        chdir: ~/scada-traffic-generator
+        target: swat-s1-to-s6-init
+

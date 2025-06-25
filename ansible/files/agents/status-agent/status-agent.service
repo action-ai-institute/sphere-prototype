@@ -1,0 +1,13 @@
+[Unit]
+Description=Status Agent Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/status-agent/main.py
+WorkingDirectory=/opt/status-agent
+Restart=always
+EnvironmentFile=/etc/environment
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

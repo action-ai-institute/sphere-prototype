@@ -1,0 +1,16 @@
+10-12 04:53:01.175 MainThread network  WARNING  server_mai enip_srv server termination: KeyboardInterrupt()
+10-12 04:53:01.376 MainThread network  WARNING  join       Thread-1 server TID [ 9546/140430689003264] hanging on None
+10-12 06:17:52.217   Thread-5 enip.dev ERROR    request    EtherNet/IP CIP error at 10 total bytes:
+'M\x04\x91\x06P102:1\xc3\x00\x01\x00\x01\x00'
+--------------------^ (byte 10)
+
+10-12 06:17:52.220   Thread-5 enip.srv WARNING  enip_srv_t Expected EtherNet/IP response encapsulated message; none found
+10-12 06:17:52.225   Thread-5 enip.srv WARNING  enip_srv_t Session ended (server EtherNet/IP status: 0x08 == 8)
+10-12 06:18:01.151  Thread-59 enip.dev ERROR    request    EtherNet/IP CIP error at 10 total bytes:
+'M\x04\x91\x06P102:1\xc3\x00\x01\x00\x01\x00'
+--------------------^ (byte 10)
+
+10-12 06:18:01.152  Thread-59 enip.srv WARNING  enip_srv_t Expected EtherNet/IP response encapsulated message; none found
+10-12 06:18:01.156  Thread-59 enip.srv WARNING  enip_srv_t Session ended (server EtherNet/IP status: 0x08 == 8)
+10-12 06:18:04.422 MainThread network  WARNING  server_mai enip_srv server termination: KeyboardInterrupt()
+10-12 06:18:04.622 MainThread network  WARNING  join       Thread-1 server TID [ 9677/140464170911488] hanging on None

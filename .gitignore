@@ -1,0 +1,5 @@
+ssh_config
+ansible/files/scada-traffic-generator/minicps-examples/swat-s1-to-s6-enip/real-swat-data/SWaT_Dataset_Normal_v1.csv
+ansible/files/scada-traffic-generator/minicps-examples/swat-s1-to-s6-modbus/real-swat-data/SWaT_Dataset_Normal_v1.csv
+ansible/files/scada-traffic-generator/minicps-examples/swat-s1-to-s6/real-swat-data/SWaT_Dataset_Normal_v1.csv
+inventory.ini

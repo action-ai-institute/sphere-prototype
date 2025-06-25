@@ -1,0 +1,31 @@
+- name: Install status agent
+  hosts: aqueduct
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Set up parallel command
+      ansible.builtin.package:
+        name: parallel
+        state: present
+    
+    - name: Install pip packages
+      ansible.builtin.pip:
+        name:
+          - sh
+        state: present
+
+    - name: Upload agent files
+      ansible.builtin.copy:
+        src: agents/status-agent
+        dest: /opt
+
+    - name: Copy systemd service file
+      ansible.builtin.copy:
+        src: agents/status-agent/status-agent.service
+        dest: /usr/lib/systemd/system/status-agent.service
+
+    - name: Install service
+      ansible.builtin.systemd_service:
+        name: status-agent
+        state: started
+        enabled: true

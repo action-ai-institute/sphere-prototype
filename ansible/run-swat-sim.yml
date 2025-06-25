@@ -1,0 +1,169 @@
+---
+- name: Install and configure systemd services for plant
+  hosts: plant
+  become: true
+  vars:
+    service_user: "{{ ansible_user }}"
+    working_directory: "/home/{{ ansible_user }}/scada-traffic-generator/minicps-examples/swat-s1-to-s6"
+  tasks:
+    - name: Create plant.service file
+      copy:
+        content: |
+          [Unit]
+          Description=Physical Plant Real Data Service
+          After=network.target
+
+          [Service]
+          Type=simple
+          User={{ service_user }}
+          WorkingDirectory={{ working_directory }}
+          ExecStart=/usr/bin/python2.7 physical_plant_real_data.py
+          Restart=on-failure
+          RestartSec=5
+          StandardOutput=journal
+          StandardError=journal
+
+          [Install]
+          WantedBy=multi-user.target
+        dest: /etc/systemd/system/plant.service
+        owner: root
+        group: root
+        mode: '0644'
+      notify: reload systemd
+
+    - name: Ensure Python scripts are executable
+      file:
+        path: "{{ working_directory }}/{{ item }}"
+        mode: '0755'
+      loop:
+        - physical_plant_real_data.py
+        - plc2.py
+      become_user: "{{ service_user }}"
+
+    - name: Enable plant service
+      systemd:
+        name: plant.service
+        enabled: yes
+        daemon_reload: yes
+
+    - name: Start plant service
+      systemd:
+        name: plant.service
+        state: started
+
+    - name: Check plant service status
+      systemd:
+        name: plant.service
+      register: plant_status
+
+    - name: Display service status
+      debug:
+        msg: |
+          Plant service status: {{ plant_status.status.ActiveState }}
+
+  handlers:
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+
+
+- name: Install and configure systemd services for p2
+  hosts: p2
+  become: true
+  vars:
+    service_user: "{{ ansible_user }}"
+    working_directory: "/home/{{ ansible_user }}/scada-traffic-generator/minicps-examples/swat-s1-to-s6"
+  tasks:
+    - name: Create p2.service file
+      copy:
+        content: |
+          [Unit]
+          Description=PLC2 Service
+          After=network.target
+
+          [Service]
+          Type=simple
+          User={{ service_user }}
+          WorkingDirectory={{ working_directory }}
+          ExecStart=/usr/bin/python2.7 plc2.py
+          Restart=on-failure
+          RestartSec=5
+          StandardOutput=journal
+          StandardError=journal
+
+          [Install]
+          WantedBy=multi-user.target
+        dest: /etc/systemd/system/p2.service
+        owner: root
+        group: root
+        mode: '0644'
+      notify: reload systemd
+
+    - name: Ensure Python scripts are executable
+      file:
+        path: "{{ working_directory }}/{{ item }}"
+        mode: '0755'
+      loop:
+        - physical_plant_real_data.py
+        - plc2.py
+      become_user: "{{ service_user }}"
+
+    - name: Enable and start p2 service
+      systemd:
+        name: p2.service
+        enabled: yes
+        state: started
+        daemon_reload: yes
+
+    - name: Check p2 service status
+      systemd:
+        name: p2.service
+      register: p2_status
+
+    - name: Display service status
+      debug:
+        msg: |
+          P2 service status: {{ p2_status.status.ActiveState }}
+
+  handlers:
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+# Uncomment the following sections to run PLCs and other components
+# - hosts: p2
+#   tasks:
+#     - name: run p2
+#       shell:
+#         cmd: python2.7 plc2.py &
+#         chdir: ./scada-traffic-generator/minicps-examples/swat-s1-to-s6/
+
+# - hosts: plc6
+#   tasks:
+#     - name: run plc6
+#       shell:
+#         cmd: python2.7 plc6.py &
+#         chdir: ./scada-traffic-generator/minicps-examples/swat-s1-to-s6/
+# - hosts: plc5
+#   tasks:
+#     - name: run plc5
+#       shell:
+#         cmd: python2.7 plc5.py &
+#         chdir: ./scada-traffic-generator/minicps-examples/swat-s1-to-s6/
+# - hosts: plc4
+#   tasks:
+#     - name: run plc4
+#       shell:
+#         cmd: python2.7 plc4.py &
+#         chdir: ./scada-traffic-generator/minicps-examples/swat-s1-to-s6/
+# - hosts: plc3
+#   tasks:
+#     - name: run plc3
+#       shell:
+#         cmd: python2.7 plc3.py &
+#         chdir: ./scada-traffic-generator/minicps-examples/swat-s1-to-s6/
+# - hosts: plc1
+#   tasks:
+#     - name: run plc1
+#       shell:
+#         cmd: python2.7 plc1.py &
+#         chdir: ./scada-traffic-generator/minicps-examples/swat-s1-to-s6/
