@@ -6,8 +6,8 @@
 3. `mrg login <username>`
 
 ## Usage:
-1. `bash up.sh`
-2. `bash ansible.sh`
+1. Initialize and activate the experiment: `bash up.sh`
+2. Confure the deployed nodes and start the services: `bash ansible.sh`
 3. Explore the experiment and network, over [the web interface](https://launch.sphere-testbed.net/).
 
 For example:
@@ -20,4 +20,4 @@ If you are logged into an experiment machine and are having problems inspecting 
 # Cleanup:
 1. `bash down.sh`
 
-<small>This was developed as part of the compelling demo for the year 2 site visit for the [NSF Action Institute](https://github.com/action-ai-institute).</small>
+<small>This was developed as part of the compelling demo for the year 2 site visit for the [NSF Action Institute](https://github.com/action-ai-institute) to prototype a collaboration with [SPHERE](https://sphere-project.net/)</small>
