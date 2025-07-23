@@ -1,4 +1,5 @@
 # Automated deployment onto SPHERE
+This is a prototype deployment of a water plant simulation on the SPHERE testbed, capable to communicate via the GATE action server.
 
 ## Pre-requisites
 1. Request the SWaT dataset from [iTrust, Centre for Research in Cyber Security](https://itrust.sutd.edu.sg/itrust-labs_datasets/), save it as `SWaT_Dataset_Normal_v1.csv` put it inside of the folder `ansible/files/scada-traffic-generator/minicps-examples/swat-s1-to-s6/real-swat-data/`.
@@ -20,4 +21,4 @@ If you are logged into an experiment machine and are having problems inspecting 
 # Cleanup:
 1. `bash down.sh`
 
-<small>This was developed as part of the compelling demo for the year 2 site visit for the [NSF Action Institute](https://github.com/action-ai-institute) to prototype a collaboration with [SPHERE](https://sphere-project.net/)</small>
+<small>This was developed as part of the compelling demo for the year 2 site visit for the [NSF Action Institute](https://github.com/action-ai-institute) to prototype a collaboration with [SPHERE](https://sphere-project.net/).</small>
